@@ -1,4 +1,5 @@
-''' machine learning client'''
+""" machine learning client"""
+
 import time
 import os
 import sys
@@ -8,22 +9,23 @@ import face_recognition
 
 cv2 = globals()[cv2]
 
+
 def take_photo(username):
     """
-    Helper method. Captures a photo using the default 
+    Helper method. Captures a photo using the default
     camera when the spacebar is pressed, then saves
-    the photo with a filename based on the provided username. 
+    the photo with a filename based on the provided username.
     A rectangle with instructions
     is drawn at the bottom of the video feed to guide the user.
 
     Parameters:
-    - username (str): The username to use 
+    - username (str): The username to use
     in creating the filename for the saved photo.
     The photo is saved as "{username}.png" within a directory named 'faces'.
 
     Note:
     - Relies on existence of faces directory.
-    - This method will continue to run 
+    - This method will continue to run
     indefinitely until spacebar is pressed.
     """
     cam = cv2.VideoCapture(0)
@@ -62,8 +64,10 @@ def take_photo(username):
     cam.release()
     cv2.destroyAllWindows()
 
+
 class FaceRecognition:
-    '''Class with feature to store new username face encodings and authenticate them at login'''
+    """Class with feature to store new username face encodings and authenticate them at login"""
+
     face_location = []
     face_encodings = []
     face_names = []
@@ -86,7 +90,7 @@ class FaceRecognition:
                           the photo file and for associating the face encoding with the user.
         """
         take_photo(username)
-        for image in os.listdir('faces'):
+        for image in os.listdir("faces"):
             face_image = face_recognition.load_image_file(f"faces/{image}")
             face_encoding = face_recognition.face_encodings(face_image)[0]
 
@@ -94,15 +98,16 @@ class FaceRecognition:
             self.known_face_names.append(username)
         # once db is set up, replace the previous two lines with:
         # db.Images.insert_one({"username": username, "face_encoding": face_encoding})
+
     def verify_user(self, username):
         """
         Attempts to verify a user's identity using face recognition within a limited time window.
 
         This method opens the default camera and captures video frames for a short period
-        (currently hardcoded to 3 seconds). 
+        (currently hardcoded to 3 seconds).
 
         Parameters:
-        - username (str): The username of the user attempting to verify their identity. 
+        - username (str): The username of the user attempting to verify their identity.
 
         Returns:
         - bool: True if the user is successfully verified within the time window, False
@@ -111,11 +116,11 @@ class FaceRecognition:
         video_capture = cv2.VideoCapture(0)
 
         if not video_capture.isOpened():
-            sys.exit('Video source not found...')
+            sys.exit("Video source not found...")
 
         t_end = time.time() + 3
 
-        while time.time() < t_end: # open camera for three seconds
+        while time.time() < t_end:  # open camera for three seconds
             ret, frame = video_capture.read()
             if not ret:
                 sys.exit("Failed to capture frame.")
@@ -132,7 +137,9 @@ class FaceRecognition:
 
                 # Find faces from current video and get encoding
                 self.face_location = face_recognition.face_locations(rgb_frame)
-                self.face_encodings = face_recognition.face_encodings(rgb_frame, self.face_location)
+                self.face_encodings = face_recognition.face_encodings(
+                    rgb_frame, self.face_location
+                )
 
                 for encoding in self.face_encodings:
                     # See if the face is a match for the known face(s)
@@ -140,10 +147,14 @@ class FaceRecognition:
                     # user  = db.Images.find_one({"username": username})
                     # known_face_encoding = user['face_encoding']
                     # matches = face_recognition.compare_faces(known_face_encoding, face_encoding)
-                    match = face_recognition.compare_faces(self.known_face_encodings, encoding)
+                    match = face_recognition.compare_faces(
+                        self.known_face_encodings, encoding
+                    )
                     username = "Unknown"
                     # Calculate the shortest distance to face
-                    face_dist=face_recognition.face_distance(self.known_face_encodings, encoding)
+                    face_dist = face_recognition.face_distance(
+                        self.known_face_encodings, encoding
+                    )
                     # Find smallest distance, which will be our best match
                     best_match_index = np.argmin(face_dist)
                     if match[best_match_index]:
@@ -154,6 +165,6 @@ class FaceRecognition:
         video_capture.release()
         cv2.destroyAllWindows()
 
-        if username == 'Unknown':
+        if username == "Unknown":
             return False
         return True
