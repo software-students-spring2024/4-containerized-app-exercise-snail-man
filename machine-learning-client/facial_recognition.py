@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 import face_recognition
 
-cv2 = globals()[cv2]
+#cv2 = globals()[cv2]
 
 
 def take_photo(username):
