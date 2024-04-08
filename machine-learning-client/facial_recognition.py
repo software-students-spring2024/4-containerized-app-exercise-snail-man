@@ -57,7 +57,7 @@ def take_photo(username):
         k = cv2.waitKey(1)
         if k % 256 == 32:
             # SPACE pressed
-            img_name = f"faces/{username}.png"
+            img_name = f"{username}.png"
             cv2.imwrite(img_name, frame)
             break
     # Release handle to the webcam
