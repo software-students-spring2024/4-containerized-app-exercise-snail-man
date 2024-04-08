@@ -9,6 +9,6 @@ NEW_USER = "newUsername" # create new username
 fr.setup_2fa(NEW_USER)
 
 # whenever a returning user logs in,
-# verify_user will return a boolean value indicating 
+# verify_user will return a boolean value indicating
 # whether this is the correct person for that account
 print("Verification passed: " + str(fr.verify_user(NEW_USER)))

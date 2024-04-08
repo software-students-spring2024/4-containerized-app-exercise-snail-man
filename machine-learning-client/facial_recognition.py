@@ -36,28 +36,18 @@ def take_photo(username):
             break
         # Dimensions of the frame
         height, width = frame.shape[:2]
-
-        # Coordinates and size of the rectangle
-        rect_start_point = (0, height - 50)  # Starting point (bottom left)
-        rect_end_point = (width, height)     # Ending point (bottom right)
-        rect_color = (255, 255, 255)         # Rectangle color (white)
-        rect_thickness = -1                  # Rectangle filled
-
         # Draw the rectangle
-        cv2.rectangle(frame, rect_start_point, rect_end_point, rect_color, rect_thickness)
+        cv2.rectangle(frame, (0, height - 50), (width, height), (255, 255, 255), -1)
 
         # Text settings
         text = "Hit space to take photo"
         font = cv2.FONT_HERSHEY_SIMPLEX
-        font_scale = 1
-        font_color = (0, 0, 0)  # Text color (black)
-        line_type = 2
-        text_size = cv2.getTextSize(text, font, font_scale, line_type)[0]
+        text_size = cv2.getTextSize(text, font, 1, 2)[0]
         text_x = (width - text_size[0]) // 2  # Center the text
         text_y = height - 25  # Position from the bottom
 
         # Put the text
-        cv2.putText(frame, text, (text_x, text_y), font, font_scale, font_color, line_type)
+        cv2.putText(frame, text, (text_x, text_y), font, 1, (0, 0, 0), 2)
 
         # Show the frame
         cv2.imshow("Take photo", frame)
@@ -68,7 +58,7 @@ def take_photo(username):
             img_name = f"faces/{username}.png"
             cv2.imwrite(img_name, frame)
             break
-    # Release handle to the webcam     
+    # Release handle to the webcam
     cam.release()
     cv2.destroyAllWindows()
 
