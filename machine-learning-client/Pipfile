@@ -9,6 +9,7 @@ black = "*"
 opencv-python = "*"
 face_recognition = "*"
 dlib = "==19.22"
+typing-extensions = "*"
 
 [dev-packages]
 
