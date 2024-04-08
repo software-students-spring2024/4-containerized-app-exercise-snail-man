@@ -1,7 +1,6 @@
 """ machine learning client"""
 
 import time
-import os
 import sys
 import cv2
 import numpy as np
@@ -70,10 +69,7 @@ class FaceRecognition:
 
     face_location = []
     face_encodings = []
-    face_names = []
     known_locations = []
-    known_face_encodings = []
-    known_face_names = []
     process_current_frame = True
 
     def setup_2fa(self, username):
@@ -88,18 +84,18 @@ class FaceRecognition:
         Parameters:
         - username (str): The username of the user setting up 2FA. This is used both for naming
                           the photo file and for associating the face encoding with the user.
+
+        Returns:
+        - nested list: with face encodings
         """
         take_photo(username)
-        for image in os.listdir("faces"):
-            face_image = face_recognition.load_image_file(f"faces/{image}")
-            face_encoding = face_recognition.face_encodings(face_image)[0]
+        face_encodings = []
+        face_image = face_recognition.load_image_file(f"{username}.png")
+        face_encoding = face_recognition.face_encodings(face_image)[0]
+        face_encodings.append(face_encoding)
+        return face_encodings
 
-            self.known_face_encodings.append(face_encoding)
-            self.known_face_names.append(username)
-        # once db is set up, replace the previous two lines with:
-        # db.Images.insert_one({"username": username, "face_encoding": face_encoding})
-
-    def verify_user(self, username):
+    def verify_user(self, known_face_encodings):
         """
         Attempts to verify a user's identity using face recognition within a limited time window.
 
@@ -107,8 +103,8 @@ class FaceRecognition:
         (currently hardcoded to 3 seconds).
 
         Parameters:
-        - username (str): The username of the user attempting to verify their identity.
-
+        - face encodings (nested list): The encodings of the user
+                attempting to verify their identity.
         Returns:
         - bool: True if the user is successfully verified within the time window, False
                 otherwise.
@@ -143,28 +139,23 @@ class FaceRecognition:
 
                 for encoding in self.face_encodings:
                     # See if the face is a match for the known face(s)
-                    # once db is set up, replace with something of the sort:
-                    # user  = db.Images.find_one({"username": username})
-                    # known_face_encoding = user['face_encoding']
-                    # matches = face_recognition.compare_faces(known_face_encoding, face_encoding)
                     match = face_recognition.compare_faces(
-                        self.known_face_encodings, encoding
+                        known_face_encodings, encoding
                     )
-                    username = "Unknown"
                     # Calculate the shortest distance to face
                     face_dist = face_recognition.face_distance(
-                        self.known_face_encodings, encoding
+                        known_face_encodings, encoding
                     )
                     # Find smallest distance, which will be our best match
                     best_match_index = np.argmin(face_dist)
                     if match[best_match_index]:
-                        username = self.known_face_names[best_match_index]
+                        video_capture.release()
+                        cv2.destroyAllWindows()
+                        return True
 
             self.process_current_frame = not self.process_current_frame
         # Release handle to the webcam
         video_capture.release()
         cv2.destroyAllWindows()
 
-        if username == "Unknown":
-            return False
-        return True
+        return False
