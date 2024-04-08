@@ -23,8 +23,6 @@ def take_photo(username):
     cam = cv2.VideoCapture(0)
     cv2.namedWindow("Take photo")
 
-    img_counter = 0
-
     while True:
         ret, frame = cam.read()
         if not ret:
