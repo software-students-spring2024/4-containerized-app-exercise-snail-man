@@ -1,3 +1,4 @@
+''' machine learning client'''
 import time
 import os
 import sys
@@ -67,11 +68,12 @@ def take_photo(username):
             img_name = f"faces/{username}.png"
             cv2.imwrite(img_name, frame)
             break
-    # Release handle to the webcam       
+    # Release handle to the webcam     
     cam.release()
     cv2.destroyAllWindows()
 
 class FaceRecognition:
+    '''Class with feature to store new username face encodings and authenticate them at login'''
     face_location = []
     face_encodings = []
     face_names = []
@@ -142,27 +144,26 @@ class FaceRecognition:
                 self.face_location = face_recognition.face_locations(rgb_frame)
                 self.face_encodings = face_recognition.face_encodings(rgb_frame, self.face_location)
 
-                for face_encoding in self.face_encodings:
+                for encoding in self.face_encodings:
                     # See if the face is a match for the known face(s)
                     # once db is set up, replace with something of the sort:
                     # user  = db.Images.find_one({"username": username})
                     # known_face_encoding = user['face_encoding']
                     # matches = face_recognition.compare_faces(known_face_encoding, face_encoding)
-                    match = face_recognition.compare_faces(self.known_face_encodings, face_encoding)
+                    match = face_recognition.compare_faces(self.known_face_encodings, encoding)
                     username = "Unknown"
                     # Calculate the shortest distance to face
-                    face_distances=face_recognition.face_distance(self.known_face_encodings, face_encoding)
+                    face_dist=face_recognition.face_distance(self.known_face_encodings, encoding)
                     # Find smallest distance, which will be our best match
-                    best_match_index = np.argmin(face_distances)
+                    best_match_index = np.argmin(face_dist)
                     if match[best_match_index]:
                         username = self.known_face_names[best_match_index]
 
-            self.process_current_frame = not self.process_current_frame  
+            self.process_current_frame = not self.process_current_frame
         # Release handle to the webcam
         video_capture.release()
         cv2.destroyAllWindows()
 
         if username == 'Unknown':
             return False
-        
         return True

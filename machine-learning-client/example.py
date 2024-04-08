@@ -1,3 +1,4 @@
+''' example program to use the methods in facial_recognition'''
 from facial_recognition import FaceRecognition
 
 fr = FaceRecognition() # instantiate facial recognition object
