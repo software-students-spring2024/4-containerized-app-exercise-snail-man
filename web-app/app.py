@@ -13,9 +13,10 @@ load_dotenv()
 
 app = Flask(__name__)
 
-ML_CLIENT_URL = os.getenv('ML_CLIENT_URL', 'http://localhost:5001/receive_data')
+ML_CLIENT_URL = os.getenv("ML_CLIENT_URL", "http://localhost:5001/receive_data")
 
-@app.route('/display-data', methods=['GET'])
+
+@app.route("/display-data", methods=["GET"])
 def request_data_and_display_result():
     """
     Gets JSON of data from API Endpont ML_CLENT_URL and renders it in result.html
@@ -30,7 +31,8 @@ def request_data_and_display_result():
 
     analysis_result = response.json()
 
-    return render_template('result.html', analysis_result=analysis_result)
+    return render_template("result.html", analysis_result=analysis_result)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app.run(port=5000)
