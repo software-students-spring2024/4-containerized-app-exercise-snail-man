@@ -2,8 +2,8 @@ FROM python:3
 
 WORKDIR /
 
-RUN pip install pipenv
+ADD . /
 
-COPY Pipfile Pipfile.lock /
+RUN pip install -r requirements.txt
 
-RUN pipenv install --system
+EXPOSE 80
