@@ -1,5 +1,5 @@
 # Use the official Python image as a base image
-FROM python:3.9-slim
+FROM python:3
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -8,25 +8,26 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     FLASK_RUN_HOST=localhost \
     FLASK_RUN_PORT=5000
 
-# Install system dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        gcc \
-        libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
-
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /web-app
 
-# Copy the requirements file and install dependencies
-COPY requirements.txt requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy the requirements file into the container
+COPY requirements.txt .
+
+# Install virtualenv and create a virtual environment
+RUN pip install virtualenv && \
+    virtualenv venv
+
+# Activate the virtual environment
+SHELL ["/bin/bash", "-c"]
+RUN source venv/bin/activate && \
+    pip install -r requirements.txt
 
 # Copy the application code into the container
 COPY . .
 
-
+# Expose port 5000
 EXPOSE 5000
 
-# Run the Flask application
-CMD ["flask", "run"]
+# Run the Flask application within the virtual environment
+CMD ["venv/bin/python", "app.py"]

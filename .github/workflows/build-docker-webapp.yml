@@ -1,0 +1,20 @@
+name: Build and Run Docker Web-App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Build Docker image
+        run: |
+          docker build -t web-app_image ./web-app
+      
+      - name: Run Docker container
+        run: |
+          docker run -d -p 5000:5000 --env-file web-app/.env ./web-app/web-app_image
