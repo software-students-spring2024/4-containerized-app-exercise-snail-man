@@ -6,9 +6,9 @@ a (hopefully) Human-Readable Format
 """
 
 import os
+import base64
 from flask import Flask, render_template, request
 import requests
-import base64
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,6 +20,10 @@ ML_CLIENT_URL = os.getenv("ML_CLIENT_URL", "http://localhost:5001/receive_data")
 
 @app.route("/add-face", methods=["GET", "POST"])
 def add_face():
+    """
+    Renders a video stream from the camera with a button to capture image.
+    Recieves captured image and saves it
+    """
     if request.method == "POST":
         # Decode base64 image data
         image_data = request.form["image_data"]
