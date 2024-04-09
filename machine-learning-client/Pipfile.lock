@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a56b43fff8fec3497d3c8bba1404c18121305488adca050ff39c8088b81b3040"
+            "sha256": "bd586ea297a9b1946b2b0de205acdbf906fc7e8067d665058b4c0a5dafdc426c"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -60,6 +60,30 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==8.1.7"
+        },
+        "cmake": {
+            "hashes": [
+                "sha256:068a3e7461dd9e487f5f3f720ae8072c2eeb37239ebe4642c4ae29058d83347f",
+                "sha256:1808071047cb49ed0fe2359e4c310b49880c2805cad4ea9f03c959f51b881ac7",
+                "sha256:22493049b6383ea2baa7237a326c2914ab4a7b3e1642f4233245e3a34aae39f6",
+                "sha256:2a8f7c8b07e6ab0dd444c5b74e658d5013ca0da456041029f734d751090bb7ec",
+                "sha256:58879ef15dd8344e1583a36cead794fb0fee13f78c590a56749283ac2e27d30a",
+                "sha256:7bb8aaa3419eafd466931e4dcc161d3e5e6a82730ab508c75946ff4fc883b3f6",
+                "sha256:85a0e28eaaee311d50fcee60f730e5a44a65b3cefc556a1163bbabd7328acd60",
+                "sha256:a36f3b19a5caa6c63aa70bfa0b262bae8d296e68c6e6d8e918edc5c51d952bf8",
+                "sha256:c097892b3653e2d2d41d055c80a9af029fdd24f9eff2ecb66576e4da8b85b1c7",
+                "sha256:c85e35ec572e54152154637f24d6bde316fbcf94dfea644bd8f22b1855a09abe",
+                "sha256:d09573411901fc8a3ede7433713c000ac7b81cda0d771874e9182770acf29eb4",
+                "sha256:de8f55198f4a820daf2c57645a4bb8cd1064dc92d950ad95be14c5ffabc15bd4",
+                "sha256:e956e4b6c2d8d6bbee399bf3c77e5b901d916fe8f35d6b2f58444d5892c4602b",
+                "sha256:ead7dc5176a6c6347b3fc19532c25ec328f9279b6213902ac930242334e7b621",
+                "sha256:ec49a7a4480959c229d9d2aa77f7885859c17a45fc66981aaf4551ceffb4d030",
+                "sha256:ec8b39fdeb75c48fd5a2894658a1ca75f94fb49b421c1f753d86d3e5d5e9f196",
+                "sha256:f7c7dabf3dd40cb830d2eded43d51c5a3737625bbc5ab6916041c04e352b74f8"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.7'",
+            "version": "==3.29.0.1"
         },
         "dill": {
             "hashes": [
@@ -153,7 +177,7 @@
                 "sha256:f870204a840a60da0b12273ef34f7051e98c3b5961b61b0c2c1be6dfd64fbcd3",
                 "sha256:ffa75af20b44f8dba823498024771d5ac50620e6915abac414251bd971b4529f"
             ],
-            "markers": "python_version >= '3.7'",
+            "markers": "python_version >= '3.9'",
             "version": "==1.26.4"
         },
         "opencv-python": {
