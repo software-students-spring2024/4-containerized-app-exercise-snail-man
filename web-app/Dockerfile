@@ -11,11 +11,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 # Set the working directory in the container
 WORKDIR /
 
-# # Copy the requirements file into the container
-# COPY requirements.txt .
+# Copy the requirements file into the container
+COPY requirements.txt .
 
-# # Install dependencies
-# RUN pip install -r requirements.txt
+# Install dependencies
+RUN pip install -r requirements.txt
 
 # Copy the application code into the container
 COPY . .
