@@ -34,6 +34,33 @@ def add_face():
             f.write(image_data)
 
         return "Image captured successfully!"
+    
+        """
+        code to eventually send image to database and query ML
+        from flask_pymongo import PyMongo
+        from pymongo.mongo_client import MongoClient
+        from pymongo.server_api import ServerApi
+        from hashlib import sha256
+        import pymongo
+
+        cxn = pymongo.MongoClient(os.getenv("MONGO_URI"))
+        db = cxn[os.getenv("MONGO_DB")]  # store a reference to the database
+        print(db)
+
+        try:
+    # verify the connection works by pinging the database
+    cxn.admin.command("ping")  # The ping command is cheap and does not require auth.
+    print(" *", "Connected to MongoDB!")  # if we get here, the connection worked!  
+        except Exception as e:
+    # the ping command failed, so the connection is not available.
+    print(" * MongoDB connection error:", e)  # debug
+
+        db.Users.insert_one({"imageData": image_data, "imageName": sha256(image_data.encode('utf-8')).hexdigest()})
+        fetch('http:////machine-learning-client:5000/find-face', {
+                method: 'POST',
+                body: 'image_data=' + sha256(image_data.encode('utf-8')).hexdigest(),
+            })
+        """
 
     return render_template("addFace.html")
 
