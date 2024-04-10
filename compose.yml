@@ -17,14 +17,14 @@ services:
     image: ml-client
 
   database:
-    build: ./database
+    image: mongo
     ports:
       - "27017:27017"
     volumes:
       - mongodb-data:/data/db
-    # networks:
-    #   - my-network
-    image: database
+    networks:
+      - front-tier
+      - back-tier
 
 volumes:
   mongodb-data:
