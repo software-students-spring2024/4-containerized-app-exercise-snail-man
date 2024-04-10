@@ -43,7 +43,7 @@ def detect_and_display_faces(image_path):
         cv2.rectangle(input_image, (x, y), (x + width, y + height), (0, 0, 255), 2)
 
     # Save the result in the current directory
-    output_image_path = "detected_faces.jpg"
+    output_image_path = "images/detected_faces.jpg"
     cv2.imwrite(output_image_path, input_image)
 
     cv2.destroyAllWindows()  # Ensure all windows are closed when done
@@ -51,4 +51,4 @@ def detect_and_display_faces(image_path):
 
 
 # Example usage
-# detect_and_display_faces("test.png")
+print(detect_and_display_faces("images/test.png"))
