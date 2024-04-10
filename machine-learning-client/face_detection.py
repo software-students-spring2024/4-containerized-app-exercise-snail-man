@@ -10,15 +10,15 @@ def detect_and_display_faces(image_path):
     """
     Detects faces in an image, draws rectangles around them, and saves the result.
 
-    This function loads a specified image, 
+    This function loads a specified image,
     detects faces using OpenCV's Haar feature-based cascade classifiers,
-    draws rectangles around detected faces, 
+    draws rectangles around detected faces,
     and saves the image with detections to the current directory.
 
     Parameters:
     - image_path: A string representing the path to the input image file.
 
-    The function saves the output image with rectangles 
+    The function saves the output image with rectangles
     in the current directory named 'detected_faces.jpg'.
 
     Returns:
@@ -51,4 +51,4 @@ def detect_and_display_faces(image_path):
 
 
 # Example usage
-#detect_and_display_faces("test.png")
+# detect_and_display_faces("test.png")
