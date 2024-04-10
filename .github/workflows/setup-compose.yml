@@ -21,6 +21,7 @@ jobs:
         - name: compose file
           run: |
             docker compose up -d
+            sleep 30 # Prevent error due to unfinished composition
         - name: Ensure database is running
           run: |
             if ! mongosh --quiet --eval 'db.getMongo().getDBNames().indexOf("admin")'; then
