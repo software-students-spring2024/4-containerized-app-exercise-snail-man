@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition</title>
+</head>
+<body>
+    <style>
+        .image-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .delete-button {
+            margin-left: 10px;
+        }
+    </style>
+    <h1>Previously Faces</h1>
+    <ul class = "picList">
+    {% for image_file in image_files %}
+    <div>
+        <img src="{{ url_for('images', filename=image_file) }}" alt="Saved Image">
+    </div>
+    {% endfor %}
+    </ul>
+</body>
+</html>
