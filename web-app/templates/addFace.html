@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition</title>
+</head>
+<body>
+    <h1>Face Recognition</h1>
+    
+    <div id="camera_feed">
+        <video id="video" width="640" height="480" autoplay></video>
+    </div>
+    
+    <button id="capture_btn">Capture Image</button>
+
+    <script>
+        const video = document.getElementById('video');
+
+        // Accessing the camera and displaying the feed
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then((stream) => {
+                video.srcObject = stream;
+            })
+            .catch((error) => {
+                console.error('Error accessing the camera: ', error);
+            });
+
+        // Capturing image when button is clicked
+        const captureBtn = document.getElementById('capture_btn');
+
+        captureBtn.addEventListener('click', () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const imageDataURL = canvas.toDataURL('image/jpeg');
+
+            // Sending captured image data to server
+            fetch('/add-face', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'image_data=' + encodeURIComponent(imageDataURL),
+            })
+            .then((response) => response.text())
+            .then((data) => {
+                alert(data);
+            })
+            .catch((error) => {
+                console.error('Error capturing image: ', error);
+            });
+        });
+    </script>
+</body>
+</html>
