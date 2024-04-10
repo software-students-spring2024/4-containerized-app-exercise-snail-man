@@ -9,13 +9,18 @@ jobs:
         - name: Set up Python
           uses: actions/setup-python@v4
           with:
-            python-version: "3.10" # update version(s) as needed
+            python-version: "3.10" 
+        - name: Install Docker Compose
+          run: |
+            sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-composesudo chmod +x /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+            docker-compose --version
         - name: compose file
           run: |
             docker compose up -d
         - name: Ensure database is running
           run: |
-            if ! mongosh --quiet --eval 'db.getMongo().getDBNames().indexOf("admin")'; then
+            if ! docker-compose exec frontend-webapp mongosh --quiet --eval 'db.getMongo().getDBNames().indexOf("admin")'; then
               echo "Error: MongoDB connection failed."
               exit 1
             fi
