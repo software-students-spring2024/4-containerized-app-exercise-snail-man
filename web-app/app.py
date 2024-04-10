@@ -56,7 +56,7 @@ def add_face():
 # the ping command failed, so the connection is not available.
 # print(" * MongoDB connection error:", e)  # debug
 
-#    db.Users.insert_one({"imageData": image_data,
+#    db.Raw.insert_one({"imageData": image_data,
 #                            "imageName": sha256(image_data.encode('utf-8')).hexdigest()})
 #    fetch('http:////machine-learning-client:5000/find-face', {
 #            method: 'POST',
@@ -64,22 +64,35 @@ def add_face():
 #        })
 
 
-@app.route("/display-data", methods=["GET"])
-def request_data_and_display_result():
+@app.route("/found-faces", methods=["GET"])
+def found_faces():
     """
-    Gets JSON of data from API Endpont ML_CLENT_URL and renders it in result.html
+    Displays all processed images in the database
 
     Returns:
-        html: Table displaying data
+        html: a list displaying all the currently stored processed images
 
     """
-    data_to_send = {"data": "Your data to be analyzed"}
+    #pics = db.Processed.find()
+    # Create a folder named 'images' if it doesn't exist
+    #if not os.path.exists('images'):
+        #os.makedirs('images')
+    
+    #image_files = []
 
-    response = requests.post(ML_CLIENT_URL, json=data_to_send, timeout=10)
+    # Iterate over the retrieved documents
+    #for i, pic in enumerate(pics):
+        #image_data = pic.get('image_data')
 
-    analysis_result = response.json()
+        # Save the image to the 'images' folder
+        #image_path = f'images/image_{i}.jpg'
+        #with open(image_path, 'wb') as f:
+            #f.write(image_data)
+        
+        #image_files.append(image_path)
 
-    return render_template("result.html", analysis_result=analysis_result)
+    #return render_template('foundFaces.html', image_files=image_files)
+    return render_template('foundFaces.html')
 
 
 if __name__ == "__main__":
