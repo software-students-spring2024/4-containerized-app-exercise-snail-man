@@ -8,7 +8,6 @@ a (hopefully) Human-Readable Format
 import os
 import base64
 from flask import Flask, render_template, request
-import requests
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -73,26 +72,26 @@ def found_faces():
         html: a list displaying all the currently stored processed images
 
     """
-    #pics = db.Processed.find()
+    # pics = db.Processed.find()
     # Create a folder named 'images' if it doesn't exist
-    #if not os.path.exists('images'):
-        #os.makedirs('images')
-    
-    #image_files = []
+    # if not os.path.exists('images'):
+    # os.makedirs('images')
+
+    # image_files = []
 
     # Iterate over the retrieved documents
-    #for i, pic in enumerate(pics):
-        #image_data = pic.get('image_data')
+    # for i, pic in enumerate(pics):
+    # image_data = pic.get('image_data')
 
-        # Save the image to the 'images' folder
-        #image_path = f'images/image_{i}.jpg'
-        #with open(image_path, 'wb') as f:
-            #f.write(image_data)
-        
-        #image_files.append(image_path)
+    # Save the image to the 'images' folder
+    # image_path = f'images/image_{i}.jpg'
+    # with open(image_path, 'wb') as f:
+    # f.write(image_data)
 
-    #return render_template('foundFaces.html', image_files=image_files)
-    return render_template('foundFaces.html')
+    # image_files.append(image_path)
+
+    # return render_template('foundFaces.html', image_files=image_files)
+    return render_template("foundFaces.html")
 
 
 if __name__ == "__main__":
