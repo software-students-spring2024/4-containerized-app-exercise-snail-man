@@ -1,0 +1,36 @@
+services:
+  frontend:
+    build: ./web-app
+    ports:
+      - "5000:5000"
+    networks:
+      - front-tier
+      - back-tier
+    image: web-app
+
+  ml-client:
+    build: ./machine-learning-client
+    volumes:
+      - mongodb-data:/etc/data
+    networks:
+      - back-tier
+    image: ml-client
+
+  database:
+    build: ./database
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    # networks:
+    #   - my-network
+    image: database
+
+volumes:
+  mongodb-data:
+    driver: local
+
+networks:
+  # The presence of these objects is sufficient to define them
+  front-tier: {}
+  back-tier: {}
