@@ -6,8 +6,8 @@ name = "pypi"
 [packages]
 pylint = "*"
 black = "*"
-opencv-python = "*"
 typing-extensions = "*"
+opencv-python = "*"
 
 [dev-packages]
 
