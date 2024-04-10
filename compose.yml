@@ -1,12 +1,13 @@
 services:
   frontend:
     build: ./web-app
+    image: frontend-webapp
     ports:
       - "5000:5000"
     networks:
       - front-tier
       - back-tier
-    image: web-app
+    
 
   ml-client:
     build: ./machine-learning-client
