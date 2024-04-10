@@ -1,0 +1,25 @@
+name: setup-compose
+on: [push, pull_request]
+
+jobs:
+    setup-compose:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - name: Set up Python
+          uses: actions/setup-python@v4
+          with:
+            python-version: "3.10" # update version(s) as needed
+        - name: compose file
+          run: |
+            docker compose up -d
+        - name: Ensure database is running
+          run: |
+            if ! mongo --quiet --eval 'db.getMongo().getDBNames().indexOf("admin")'; then
+              echo "Error: MongoDB connection failed."
+              exit 1
+            fi
+        - name: Ensure web app is running
+          run: |
+            curl -s http://localhost:5000 || exit 1
+  
