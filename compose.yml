@@ -1,0 +1,31 @@
+services:
+  frontend:
+    build: ./web-app
+    ports:
+      - "443:8043"
+    networks:
+      - front-tier
+      - back-tier
+
+  ml-client:
+    build: ./machine-learning-client
+    volumes:
+      - db-data:/etc/data
+    networks:
+      - back-tier
+
+  database:
+    build: ./database
+    volumes:
+      - db-data:/etc/data
+    networks:
+      - back-tier
+
+volumes:
+  db-data:
+    driver: local
+
+networks:
+  # The presence of these objects is sufficient to define them
+  front-tier: {}
+  back-tier: {}
