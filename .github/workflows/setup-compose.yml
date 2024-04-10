@@ -15,7 +15,7 @@ jobs:
             docker compose up -d
         - name: Ensure database is running
           run: |
-            if ! mongo --quiet --eval 'db.getMongo().getDBNames().indexOf("admin")'; then
+            if ! mongosh --quiet --eval 'db.getMongo().getDBNames().indexOf("admin")'; then
               echo "Error: MongoDB connection failed."
               exit 1
             fi
