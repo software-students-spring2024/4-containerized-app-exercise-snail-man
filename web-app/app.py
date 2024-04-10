@@ -6,7 +6,7 @@ a (hopefully) Human-Readable Format
 """
 
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 import requests
 from dotenv import load_dotenv
 
@@ -33,6 +33,17 @@ def request_data_and_display_result():
     analysis_result = response.json()
 
     return render_template("result.html", analysis_result=analysis_result)
+
+
+@app.route("/")
+def index():
+    """
+    Returns success when app runs
+
+    Returns:
+        json: 200 status code and success message if app successfully run
+    """
+    return jsonify({"message": "Success"}), 200
 
 
 if __name__ == "__main__":
