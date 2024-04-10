@@ -7,10 +7,7 @@ name = "pypi"
 pylint = "*"
 black = "*"
 opencv-python = "*"
-face_recognition = "*"
-dlib = "==19.22"
 typing-extensions = "*"
-cmake = "*"
 
 [dev-packages]
 
