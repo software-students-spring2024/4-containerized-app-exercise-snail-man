@@ -12,7 +12,7 @@ jobs:
 
     - name: Run Docker Compose
       run: |
-        docker compose up -d  # Run Docker Compose in detached mode
+        docker compose up
         # Wait for the Flask app to start
         until $(curl --output /dev/null --silent --head --fail http://localhost:5000); do
           printf '.'
