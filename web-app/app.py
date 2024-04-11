@@ -9,7 +9,6 @@ import os
 import base64
 from flask import Flask, render_template, request
 import pymongo
-
 # import requests
 from dotenv import load_dotenv
 
@@ -65,7 +64,7 @@ def add_face():
 # the ping command failed, so the connection is not available.
 # print(" * MongoDB connection error:", e)  # debug
 
-#    db.Users.insert_one({"imageData": image_data,
+#    db.Raw.insert_one({"imageData": image_data,
 #                            "imageName": sha256(image_data.encode('utf-8')).hexdigest()})
 #    fetch('http:////machine-learning-client:5000/find-face', {
 #            method: 'POST',
@@ -73,19 +72,40 @@ def add_face():
 #        })
 
 
-@app.route("/display-data", methods=["GET"])
-def request_data_and_display_result():
+@app.route("/found-faces", methods=["GET"])
+def found_faces():
     """
-    Gets JSON of data from database render in result.html
+    Displays all processed images in the database
 
     Returns:
-        html: Table displaying data
+        html: a list displaying all the currently stored processed images
 
     """
     data_from_mongo = list(db.Users.find())
 
     keys = data_from_mongo[0].keys() if data_from_mongo else []
 
+    
+
+    # pics = db.Processed.find()
+    # Create a folder named 'images' if it doesn't exist
+    # if not os.path.exists('images'):
+    # os.makedirs('images')
+
+    # image_files = []
+
+    # Iterate over the retrieved documents
+    # for i, pic in enumerate(pics):
+    # image_data = pic.get('image_data')
+
+    # Save the image to the 'images' folder
+    # image_path = f'images/image_{i}.jpg'
+    # with open(image_path, 'wb') as f:
+    # f.write(image_data)
+
+    # image_files.append(image_path)
+
+    # return render_template('foundFaces.html', image_files=image_files)
     return render_template("result.html", analysis_result=data_from_mongo, keys=keys)
 
 
