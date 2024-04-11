@@ -4,9 +4,30 @@ Test file for web-app/app.py
 
 import base64
 import sys
+import pytest
 
 sys.path.append("web-app")
 from app import app
+
+# from _pytest.monkeypatch import monkeypatch
+
+
+@pytest.fixture
+def mock_db(mocker):
+    """Mock database fixture."""
+    mock_db = mocker.patch("app.db")
+    mock_collection = mock_db.Users
+
+    # Sample data
+    sample_data = [
+        {"_id": 1, "name": "John Doe", "age": 30},
+        {"_id": 2, "name": "Jane Smith", "age": 25},
+    ]
+
+    # Mocking the find method of Users collection
+    mock_collection.find.return_value = sample_data
+
+    return mock_db
 
 
 class TestAppRoutes:
@@ -66,23 +87,13 @@ class TestAppRoutes:
         # Assert that the response message indicates successful image capture
         assert b"Image captured successfully!" in response.data
 
-    def test_request_data_and_display_result(self, mocker):
+    def test_request_data_and_display_result(self, mock_db):
         """
         Test the /found-faces route.
+
+        Args:
+            mock_db: Mock database fixture.
         """
-
-        # Mock the Database
-        mock_db = mocker.patch("app.db")
-        mock_collection = mock_db.Users
-
-        # Sample data
-        sample_data = [
-            {"_id": 1, "name": "John Doe", "age": 30},
-            {"_id": 2, "name": "Jane Smith", "age": 25},
-        ]
-
-        # Mocking the find method of Users collection
-        mock_collection.find.return_value = sample_data
 
         # Make request and check response
         response = self.app.get("/found-faces")
@@ -90,6 +101,6 @@ class TestAppRoutes:
 
         # Check if the sample data is present in the response
         response_data_str = response.data.decode("utf-8")
-        for data in sample_data:
+        for data in mock_db.Users.find.return_value:
             assert data["name"] in response_data_str
             assert str(data["age"]) in response_data_str
