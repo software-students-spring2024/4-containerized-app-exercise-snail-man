@@ -35,14 +35,20 @@ def add_face():
     """
     if request.method == "POST":
         # Decode base64 image data
-        image_data = request.form["image_data"]
-        image_data = base64.b64decode(image_data.split(",")[1])
+        try:
+            image_data = request.form["image_data"]
+            image_data = base64.b64decode(image_data.split(",")[1])
+        except IndexError:
+            return "Error: Invalid image data format."
 
         # Write image to file
-        with open("images/captured_image.jpg", "wb") as f:
-            f.write(image_data)
+        try:
+            with open("images/captured_image.jpg", "wb") as f:
+                f.write(image_data)
+            return "Image captured successfully!"
+        except IOError as e:
+            return f"Error saving image: {e}"
 
-        return "Image captured successfully!"
     return render_template("addFace.html")
 
 
