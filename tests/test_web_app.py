@@ -68,17 +68,16 @@ class TestAppRoutes:
         # Apply the mock to Flask's request object
         monkeypatch.setattr("flask.request", mock_post)
 
-        # Make a POST request to the route
+        # Make POST request and check response
         response = self.app.post("/add-face", data={"image_data": mocked_image_data})
-
-        # Check if the response status code is 200
+        
         assert response.status_code == 200
 
         # Check if the image is saved to the file
         with open("images/captured_image.jpg", "rb") as f:
             saved_image_data = f.read()
 
-        # Decode base64 image data
+        # Decode image data
         decoded_image_data = base64.b64decode(mocked_image_data.split(",")[1])
 
         # Assert that the saved image data matches the decoded image data
