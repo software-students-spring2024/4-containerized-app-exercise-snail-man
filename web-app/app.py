@@ -9,6 +9,7 @@ import os
 import base64
 from flask import Flask, render_template, request
 import pymongo
+
 # import requests
 from dotenv import load_dotenv
 
@@ -84,8 +85,6 @@ def found_faces():
     data_from_mongo = list(db.Users.find())
 
     keys = data_from_mongo[0].keys() if data_from_mongo else []
-
-    
 
     # pics = db.Processed.find()
     # Create a folder named 'images' if it doesn't exist
