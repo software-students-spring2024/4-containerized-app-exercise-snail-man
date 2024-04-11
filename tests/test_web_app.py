@@ -68,7 +68,7 @@ class TestAppRoutes:
 
     def test_request_data_and_display_result(self, mocker):
         """
-        Test the /display-data route.
+        Test the /found-faces route.
         """
 
         # Mock the Database
@@ -85,7 +85,7 @@ class TestAppRoutes:
         mock_collection.find.return_value = sample_data
 
         # Make request and check response
-        response = self.app.get("/display-data")
+        response = self.app.get("/found-faces")
         assert response.status_code == 200
 
         # Check if the sample data is present in the response
