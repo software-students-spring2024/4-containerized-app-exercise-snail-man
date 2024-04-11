@@ -13,15 +13,18 @@ jobs:
           python-version: "3.10" 
       - name: Install pytest
         run:
-          pip install pytest pytest-flask
+          pip install pytest pytest-flask pytest-mock
       - name: Install dependencies
         run: 
           pip install -r web-app/requirements.txt 
           pip install -r machine-learning-client/requirements.txt
           pip install -r tests/requirements.txt
-      - name: Test Web App
+      - name: Run Unit Tests outside Docker
         run: |
           pytest
-          
+      - name: Run Dockerized Unit Tests
+        run: |
+          docker build -t test-image -f PytestDockerfile .
+          docker run test-image
             
             
