@@ -1,4 +1,4 @@
-name: log github events
+name: Run Pytest
 on: [push, pull_request]
 
 jobs:
