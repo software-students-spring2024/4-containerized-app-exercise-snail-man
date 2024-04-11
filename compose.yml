@@ -7,6 +7,9 @@ services:
       - front-tier
       - back-tier
     image: web-app
+    environment:
+      - MONGO_URI="mongodb://database:27017/ml-client-database"
+      - MONGO_DB="ml-client-database"
 
   ml-client:
     build: ./machine-learning-client
@@ -25,6 +28,8 @@ services:
     # networks:
     #   - my-network
     image: database
+    environment:
+      - MONGO_URI="mongodb://database:27017/ml-client-database"
 
 volumes:
   mongodb-data:

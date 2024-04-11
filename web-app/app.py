@@ -8,7 +8,9 @@ a (hopefully) Human-Readable Format
 import os
 import base64
 from flask import Flask, render_template, request
-import requests
+import pymongo
+
+# import requests
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -16,6 +18,13 @@ load_dotenv()
 app = Flask(__name__)
 
 ML_CLIENT_URL = os.getenv("ML_CLIENT_URL", "http://localhost:5001/receive_data")
+
+
+mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+mongo_db = os.getenv("MONGO_DB", "default_database")
+
+mongo_client = pymongo.MongoClient(mongo_uri)
+db = mongo_client[mongo_db]
 
 
 @app.route("/add-face", methods=["GET", "POST"])
@@ -67,19 +76,17 @@ def add_face():
 @app.route("/display-data", methods=["GET"])
 def request_data_and_display_result():
     """
-    Gets JSON of data from API Endpont ML_CLENT_URL and renders it in result.html
+    Gets JSON of data from database render in result.html
 
     Returns:
         html: Table displaying data
 
     """
-    data_to_send = {"data": "Your data to be analyzed"}
+    data_from_mongo = list(db.Users.find())
 
-    response = requests.post(ML_CLIENT_URL, json=data_to_send, timeout=10)
+    keys = data_from_mongo[0].keys() if data_from_mongo else []
 
-    analysis_result = response.json()
-
-    return render_template("result.html", analysis_result=analysis_result)
+    return render_template("result.html", analysis_result=data_from_mongo, keys=keys)
 
 
 if __name__ == "__main__":
