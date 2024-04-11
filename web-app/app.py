@@ -8,6 +8,9 @@ a (hopefully) Human-Readable Format
 import os
 import base64
 from flask import Flask, render_template, request
+import pymongo
+
+# import requests
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -15,6 +18,13 @@ load_dotenv()
 app = Flask(__name__)
 
 ML_CLIENT_URL = os.getenv("ML_CLIENT_URL", "http://localhost:5001/receive_data")
+
+
+mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+mongo_db = os.getenv("MONGO_DB", "default_database")
+
+mongo_client = pymongo.MongoClient(mongo_uri)
+db = mongo_client[mongo_db]
 
 
 @app.route("/add-face", methods=["GET", "POST"])
@@ -72,6 +82,10 @@ def found_faces():
         html: a list displaying all the currently stored processed images
 
     """
+    data_from_mongo = list(db.Users.find())
+
+    keys = data_from_mongo[0].keys() if data_from_mongo else []
+
     # pics = db.Processed.find()
     # Create a folder named 'images' if it doesn't exist
     # if not os.path.exists('images'):
@@ -90,8 +104,8 @@ def found_faces():
 
     # image_files.append(image_path)
 
-    # return render_template('foundFaces.html', image_files=image_files)
-    return render_template("foundFaces.html")
+    # return render_template('foundFaces.html', image_files=image_files) changed for template's sake
+    return render_template("result.html", analysis_result=data_from_mongo, keys=keys)
 
 
 if __name__ == "__main__":

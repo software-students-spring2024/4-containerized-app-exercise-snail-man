@@ -1,0 +1,27 @@
+name: Run Pytest
+on: [push, pull_request]
+
+jobs:
+  run-unit-tests:
+    runs-on: ubuntu-latest
+    
+    steps: 
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10" 
+      - name: Install pytest
+        run:
+          pip install pytest pytest-flask
+      - name: Install dependencies
+        run: 
+          pip install -r web-app/requirements.txt 
+          pip install -r machine-learning-client/requirements.txt
+          pip install -r tests/requirements.txt
+      - name: Test Web App
+        run: |
+          pytest
+          
+            
+            
