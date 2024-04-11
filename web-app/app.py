@@ -104,7 +104,7 @@ def found_faces():
 
     # image_files.append(image_path)
 
-    # return render_template('foundFaces.html', image_files=image_files)
+    # return render_template('foundFaces.html', image_files=image_files) changed for template's sake
     return render_template("result.html", analysis_result=data_from_mongo, keys=keys)
 
 
