@@ -1,6 +1,5 @@
 """ Machine Learning Client for face detection """
 
-
 import os
 import cv2
 from flask import Flask, render_template, request
@@ -79,13 +78,14 @@ def find_face():
     Checks data-base for new photos, and processes them
     """
     print("request recieved")
-    #image_hash = request.headers.get("image_name")
-    #image = db.Raw.find_one({"imageName": image_hash})
+    print(request.headers.get("image_name"))
+    # image_hash = request.headers.get("image_name")
+    # image = db.Raw.find_one({"imageName": image_hash})
     image = db.Raw.find_one({})
     print(image)
     image_path = f'images/image_{image["imageName"]}.jpg'
     with open(image_path, "wb") as f:
-        f.write(image["imageData"])    
+        f.write(image["imageData"])
     detect_and_display_faces(image_path)
     return render_template("result.html")
 

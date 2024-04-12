@@ -93,6 +93,5 @@ def found_faces():
     return render_template("foundFaces.html", image_files=image_files)
 
 
-
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
