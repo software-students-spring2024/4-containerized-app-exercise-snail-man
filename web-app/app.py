@@ -9,6 +9,9 @@ import os
 from hashlib import sha256
 import base64
 from flask import Flask, render_template, request
+import pymongo
+
+# import requests
 from dotenv import load_dotenv
 import pymongo
 import requests
@@ -30,6 +33,13 @@ print(" *", "Connected to MongoDB!")  # if we get here, the connection worked!
 # print(" * MongoDB connection error:", e)  # debug
 
 
+mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+mongo_db = os.getenv("MONGO_DB", "default_database")
+
+mongo_client = pymongo.MongoClient(mongo_uri)
+db = mongo_client[mongo_db]
+
+
 @app.route("/add-face", methods=["GET", "POST"])
 def add_face():
     """
@@ -38,8 +48,11 @@ def add_face():
     """
     if request.method == "POST":
         # Decode base64 image data
-        image_data = request.form["image_data"]
-        image_data = base64.b64decode(image_data.split(",")[1])
+        try:
+            image_data = request.form["image_data"]
+            image_data = base64.b64decode(image_data.split(",")[1])
+        except IndexError:
+            return "Error: Invalid image data format."
 
         db.Raw.insert_one(
             {
@@ -53,10 +66,13 @@ def add_face():
             timeout=10,
         )
         # Write image to file
-        with open("images/captured_image.jpg", "wb") as f:
-            f.write(image_data)
+        try:
+            with open("images/captured_image.jpg", "wb") as f:
+                f.write(image_data)
+            return "Image captured successfully!"
+        except IOError as e:
+            return f"Error saving image: {e}"
 
-        return "Image captured successfully!"
     return render_template("addFace.html")
 
 
@@ -70,6 +86,7 @@ def found_faces():
 
     """
     pics = db.Processed.find()
+
     # Create a folder named 'images' if it doesn't exist
     if not os.path.exists("images"):
         os.makedirs("images")
@@ -90,5 +107,6 @@ def found_faces():
     return render_template("foundFaces.html", image_files=image_files)
 
 
+
 if __name__ == "__main__":
-    app.run("0.0.0.0")
+    app.run(debug=True, host="0.0.0.0", port=5000)
