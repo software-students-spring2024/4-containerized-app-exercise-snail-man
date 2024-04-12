@@ -1,4 +1,5 @@
 services:
+
   frontend:
     build: ./web-app
     ports:
@@ -7,6 +8,12 @@ services:
       - front-tier
       - back-tier
     image: web-app
+    environment:
+      - MONGO_URI=mongodb://database:27017/ml-client-database
+      - MONGO_DB=ml-client-database
+    logging:
+      options:
+        tag: "Flask Web App"
 
   ml-client:
     build: ./machine-learning-client
@@ -15,6 +22,9 @@ services:
     networks:
       - back-tier
     image: ml-client
+    logging:
+      options:
+        tag: "Machine Learning Client"
 
   database:
     build: ./database
@@ -25,6 +35,11 @@ services:
     # networks:
     #   - my-network
     image: database
+    environment:
+      - MONGO_URI="mongodb://database:27017/ml-client-database"
+    logging:
+      options:
+        tag: "Database"
 
 volumes:
   mongodb-data:
