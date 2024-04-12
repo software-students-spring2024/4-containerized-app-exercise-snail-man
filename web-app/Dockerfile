@@ -5,9 +5,9 @@ FROM python:3
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     FLASK_APP=app.py \
-    FLASK_RUN_HOST=localhost \
-    FLASK_RUN_PORT=5000 
-    
+    FLASK_RUN_HOST=0.0.0.0 \
+    FLASK_RUN_PORT=5000
+
 # Set the working directory in the container
 WORKDIR /
 
