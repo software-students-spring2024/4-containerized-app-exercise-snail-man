@@ -48,7 +48,7 @@ def add_face():
             }
         )
         requests.post(
-            "http:////machine-learning-client:5000/find-face",
+            "http://ml-client:5000/find-face",
             {"image_name": sha256(image_data.encode("utf-8")).hexdigest()},
             timeout=10,
         )
