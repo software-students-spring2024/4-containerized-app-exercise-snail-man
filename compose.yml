@@ -8,7 +8,6 @@ services:
     networks:
       - front-tier
       - back-tier
-    image: web-app
     environment:
       - MONGO_URI=mongodb://database:27017/ml-client-database
       - MONGO_DB=ml-client-database
