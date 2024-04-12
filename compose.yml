@@ -37,7 +37,6 @@ services:
     networks:
       - front-tier
       - back-tier
-    image: database
     environment:
       - MONGO_URI="mongodb://database:27017/ml-client-database"
     logging:
