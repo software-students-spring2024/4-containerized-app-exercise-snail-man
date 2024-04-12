@@ -1,12 +1,27 @@
 """ Machine Learning Client for face detection """
 
-import cv2
 import os
+import cv2
 from flask import Flask, render_template, request
 from dotenv import load_dotenv
+import pymongo
 
 # Ensures that OpenCV is correctly imported
 cv2 = globals()["cv2"]
+
+load_dotenv()
+
+cxn = pymongo.MongoClient(os.getenv("MONGO_URI"))
+db = cxn[os.getenv("MONGO_DB")]  # store a reference to the database
+print(db)
+
+try:
+    # verify the connection works by pinging the database
+    cxn.admin.command("ping")  # The ping command is cheap and does not require auth.
+    print(" *", "Connected to MongoDB!")  # if we get here, the connection worked!
+except Exception as e:
+    # the ping command failed, so the connection is not available.
+    print(" * MongoDB connection error:", e)  # debug
 
 
 def detect_and_display_faces(image_path):
@@ -52,17 +67,25 @@ def detect_and_display_faces(image_path):
     cv2.destroyAllWindows()  # Ensure all windows are closed when done
     return output_image_path
 
+
 load_dotenv()
 
 app = Flask(__name__)
 
-@app.route("/test", methods=["GET"])
+
+@app.route("/find-face", methods=["GET"])
 def test():
     """
-    Renders a video stream from the camera with a button to capture image.
-    Recieves captured image and saves it
+    Checks data-base for new photos, and processes them
     """
+    image_hash = request.body.get("image_name")
+    image = db.Raw.find_one({"imageName": image_hash})
+    image_path = f'images/image_{image["imageName"]}.jpg'
+    with open(image_path, "wb") as f:
+        f.write(image["image_data"])
+    detect_and_display_faces(image_path)
     return render_template("result.html")
+
 
 # Example usage
 print(detect_and_display_faces("images/test.png"))
