@@ -29,7 +29,10 @@ def detect_and_display_faces(image_path):
 
     # Read the input image
     input_image = cv2.imread(image_path)
-
+    print("Image Type " + image_path + str(type(input_image)))
+    # If image was not loaded correctly, raise exception
+    if input_image is None:
+        raise FileNotFoundError(f"No file found at the specified path: {image_path}")
     # Convert the image to grayscale for the face detection algorithm
     grayscale_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2GRAY)
 
@@ -50,5 +53,4 @@ def detect_and_display_faces(image_path):
     return output_image_path
 
 
-# Example usage
-print(detect_and_display_faces("images/test.png"))
+# detect_and_display_faces("../images/test.png")
