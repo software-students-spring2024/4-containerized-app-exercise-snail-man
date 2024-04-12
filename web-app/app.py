@@ -13,7 +13,6 @@ import pymongo
 
 # import requests
 from dotenv import load_dotenv
-import pymongo
 import requests
 
 load_dotenv()
