@@ -21,13 +21,13 @@ cxn = pymongo.MongoClient(os.getenv("MONGO_URI"))
 db = cxn[os.getenv("MONGO_DB")]  # store a reference to the database
 print(db)
 
-try:
-    # verify the connection works by pinging the database
-    cxn.admin.command("ping")  # The ping command is cheap and does not require auth.
-    print(" *", "Connected to MongoDB!")  # if we get here, the connection worked!
-except Exception as e:
-    # the ping command failed, so the connection is not available.
-    print(" * MongoDB connection error:", e)  # debug
+# try:
+# verify the connection works by pinging the database
+cxn.admin.command("ping")  # The ping command is cheap and does not require auth.
+print(" *", "Connected to MongoDB!")  # if we get here, the connection worked!
+# except Exception as e:
+# the ping command failed, so the connection is not available.
+# print(" * MongoDB connection error:", e)  # debug
 
 
 @app.route("/add-face", methods=["GET", "POST"])
