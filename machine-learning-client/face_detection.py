@@ -12,17 +12,11 @@ cv2 = globals()["cv2"]
 
 load_dotenv()
 
-cxn = pymongo.MongoClient(os.getenv("MONGO_URI"))
-db = cxn[os.getenv("MONGO_DB")]  # store a reference to the database
-print(db)
+mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+mongo_db = os.getenv("MONGO_DB", "default_database")
 
-# try:
-# verify the connection works by pinging the database
-cxn.admin.command("ping")  # The ping command is cheap and does not require auth.
-print(" *", "Connected to MongoDB!")  # if we get here, the connection worked!
-# except Exception as e:
-# the ping command failed, so the connection is not available.
-# print(" * MongoDB connection error:", e)  # debug
+mongo_client = pymongo.MongoClient(mongo_uri)
+db = mongo_client[mongo_db]
 
 
 def detect_and_display_faces(image_path):
@@ -79,22 +73,25 @@ load_dotenv()
 app = Flask(__name__)
 
 
-@app.route("/find-face", methods=["GET"])
-def test():
+@app.route("/find-face", methods=["GET", "POST"])
+def find_face():
     """
     Checks data-base for new photos, and processes them
     """
-    image_hash = request.body.get("image_name")
-    image = db.Raw.find_one({"imageName": image_hash})
+    print("request recieved")
+    #image_hash = request.headers.get("image_name")
+    #image = db.Raw.find_one({"imageName": image_hash})
+    image = db.Raw.find_one({})
+    print(image)
     image_path = f'images/image_{image["imageName"]}.jpg'
     with open(image_path, "wb") as f:
-        f.write(image["image_data"])
+        f.write(image["imageData"])    
     detect_and_display_faces(image_path)
     return render_template("result.html")
 
 
 # Example usage
-print(detect_and_display_faces("images/test.png"))
+# print(detect_and_display_faces("images/test.png"))
 
 if __name__ == "__main__":
     app.run("0.0.0.0")

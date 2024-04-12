@@ -19,19 +19,6 @@ load_dotenv()
 
 app = Flask(__name__)
 
-cxn = pymongo.MongoClient(os.getenv("MONGO_URI"))
-db = cxn[os.getenv("MONGO_DB")]  # store a reference to the database
-print(db)
-
-# try:
-# verify the connection works by pinging the database
-cxn.admin.command("ping")  # The ping command is cheap and does not require auth.
-print(" *", "Connected to MongoDB!")  # if we get here, the connection worked!
-# except Exception as e:
-# the ping command failed, so the connection is not available.
-# print(" * MongoDB connection error:", e)  # debug
-
-
 mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 mongo_db = os.getenv("MONGO_DB", "default_database")
 
@@ -56,12 +43,12 @@ def add_face():
         db.Raw.insert_one(
             {
                 "imageData": image_data,
-                "imageName": sha256(image_data.encode("utf-8")).hexdigest(),
+                "imageName": sha256(image_data).hexdigest(),
             }
         )
         requests.post(
             "http://ml-client:5000/find-face",
-            {"image_name": sha256(image_data.encode("utf-8")).hexdigest()},
+            {"image_name": sha256(image_data).hexdigest()},
             timeout=10,
         )
         # Write image to file
