@@ -1,5 +1,11 @@
 FROM python:3
 
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    FLASK_APP=face_detection.py \
+    FLASK_RUN_HOST=0.0.0.0 \
+    FLASK_RUN_PORT=80
+
 WORKDIR /
 
 ADD . /

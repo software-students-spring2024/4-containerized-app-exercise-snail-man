@@ -18,10 +18,15 @@ services:
 
   ml-client:
     build: ./machine-learning-client
+    ports:
+      - "80:80"
     volumes:
       - mongodb-data:/etc/data
     networks:
       - back-tier
+    environment:
+      - MONGO_URI=mongodb://database:27017/ml-client-database
+      - MONGO_DB=ml-client-database
     image: ml-client
     logging:
       options:
