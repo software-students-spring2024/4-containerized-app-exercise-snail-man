@@ -82,14 +82,16 @@ def find_face():
     # image_hash = request.headers.get("image_name")
     # image = db.Raw.find_one({"imageName": image_hash})
     image = db.Raw.find_one({})
-    print(image)
+    # print(image)
     image_name = image["imageName"]
     image_path = f'images/image_{image["imageName"]}.jpg'
     with open(image_path, "wb") as f:
         f.write(image["imageData"])
     with open(detect_and_display_faces(image_path), "rb") as f:
         processed_image_data = f.read()
-    db.Processed.insert_one({"imageName": image_name, "imageData": processed_image_data})
+    db.Processed.insert_one(
+        {"imageName": image_name, "imageData": processed_image_data}
+    )
     db.Raw.delete_one({"imageName": image_name})
     return render_template("result.html")
 

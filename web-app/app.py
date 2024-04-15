@@ -18,7 +18,7 @@ import requests
 load_dotenv()
 
 app = Flask(__name__)
-app.static_folder = 'images'
+app.static_folder = "images"
 
 mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 mongo_db = os.getenv("MONGO_DB", "default_database")
