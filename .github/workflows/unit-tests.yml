@@ -19,9 +19,6 @@ jobs:
           pip install -r web-app/requirements.txt 
           pip install -r machine-learning-client/requirements.txt
           pip install -r tests/requirements.txt
-      - name: Run Unit Tests outside Docker
-        run: |
-          pytest
       - name: Run Dockerized Unit Tests
         run: |
           docker build -t test-image -f PytestDockerfile .
