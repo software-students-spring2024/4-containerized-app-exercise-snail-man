@@ -20,7 +20,7 @@
     <ul class = "picList">
     {% for image_file in image_files %}
     <div>
-        <img src="{{ url_for('images', filename=image_file) }}" alt="Saved Image">
+        <img src="{{ url_for('static', filename=image_file) }}" alt="Saved Image {{ image_file }}">
     </div>
     {% endfor %}
     </ul>

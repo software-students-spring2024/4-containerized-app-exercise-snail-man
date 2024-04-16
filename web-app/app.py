@@ -18,6 +18,7 @@ import requests
 load_dotenv()
 
 app = Flask(__name__)
+app.static_folder = "images"
 
 mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
 mongo_db = os.getenv("MONGO_DB", "default_database")
@@ -81,13 +82,13 @@ def found_faces():
 
     # Iterate over the retrieved documents
     for i, pic in enumerate(pics):
-        image_data = pic.get("image_data")
+        image_data = pic["imageData"]
 
         # Save the image to the 'images' folder
-        image_path = f"images/image_{i}.jpg"
+        image_path = f"/images/image_{i}.jpg"
         with open(image_path, "wb") as f:
             f.write(image_data)
-
+        image_path = image_path[7:]
         image_files.append(image_path)
 
     return render_template("foundFaces.html", image_files=image_files)
