@@ -2,14 +2,11 @@
 Test file for web-app/app.py    
 """
 
-import base64
 import sys
 import pytest
 
 sys.path.append("web-app")
 from app import app
-
-# from _pytest.monkeypatch import monkeypatch
 
 
 @pytest.fixture
@@ -32,7 +29,7 @@ def mock_db(mocker):
 
 class TestAppRoutes:
     """
-    Class for testing routes in flask web app
+    Class for testing web app
     """
 
     def setup_method(self):
@@ -44,5 +41,19 @@ class TestAppRoutes:
         """Test the /add-face GET route."""
         response = self.app.get("/add-face")
         assert response.status_code == 200
-        # assert b"video stream" in response.data
-        # commented out until ml-client implemented
+
+    def test_add_face_get_renders_correct_template(self):
+        """Test that the /add-face GET route renders the correct HTML template."""
+        with self.app as client:
+            response = client.get("/add-face")
+            # This checks if the right template was indeed used.
+            assert "Face Recognition" in response.get_data(as_text=True)
+            assert response.status_code == 200
+
+    def test_add_face_post_invalid_data(self):
+        """
+        Test the /add-face POST route with invalid image data.
+        """
+        response = self.app.post("/add-face", data={"image_data": "invalid_base64"})
+        assert response.status_code == 200
+        assert b"Error: Invalid image data format." in response.data
